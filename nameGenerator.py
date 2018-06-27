@@ -2,8 +2,18 @@ from faker import Faker
 import random
 
 
-def generate_company():
-    this_company = Faker()
+def generate_company(country=0):
+    if country == 1:
+        address_country = "en_US"
+    elif country == 2:
+        address_country = "en_CA"
+    else:
+        if bool(random.getrandbits(1)):
+            address_country = "en_US"
+        else:
+            address_country = "en_CA"
+
+    this_company = Faker(address_country)
 
     class Company:
         def __init__(self):
