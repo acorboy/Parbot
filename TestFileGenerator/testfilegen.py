@@ -3,7 +3,8 @@
 #Parbot Test File Generator
 import sys
 import random
-from datetime import date, time
+import functools
+import time
 from addressGenerator import generate_address
 from supplier_contactGenerator import generate_supplier, generate_company, generate_contact, generate_client
 
@@ -71,25 +72,45 @@ record = {
     'vendor_contact_email' : ''
 }
 # Today's date in YYYY-MM-DD format
-todays_date = str(date.today())
+todays_date = time.strftime('%Y%m%d%H%M%S')
 
 
 def write_training(record):
     training_record = '<TokenSequence>'
     for key in record:
         training_record += '<' + key + '>' + str(record[key]) + '</' + key + '>'
-    training_record += '<TokenSequence>'
+    training_record += '</TokenSequence>'
     training_file.write(training_record + '\n')
 
 # Stub - Function for writing to test file
 def write_test(record, delim):
     test_record = ''
     for key in record:
-        if not str(record[key]).isnumeric():
+        if str(record[key]).isnumeric():
+            field = str(record[key])
+        else:
             field = '"' + str(record[key]) +'"'
-        else:  field = str(record[key])
         test_record += field + delim
-    test_file_onedelim.write(test_record + '\n')
+
+    test_file_onedelim.write(test_record.rstrip(delim) + '\n')
+
+def write_rando_fields(record):
+    # Write
+    record_list = []
+    x = 0
+    for key in record:
+        record_list.append(record[key])
+
+    random.shuffle(record_list)
+    rando_record = ''
+    for a in range(0, len(record_list)):
+        if str(record_list[a]).isnumeric():
+            rando_record += str(record_list[a]) + ','
+        else:
+            rando_record += '"' + str(record_list[a]) + '"' + ','
+
+    rando_record.rstrip(',')
+    test_file_rando_fields.write(rando_record)
 
 # Random delimiter
 def rando_delim():
@@ -109,17 +130,13 @@ for i in range(num_file_sets):
     # Header for the xml training file
     training_file.write('<Collection>' + '\n')
 
-    # 2. Open a different delimiter file
+    # 2. Open a random delimiter file
     #     Choose 1 delimiter randomly from a list of them
     test_file_onedelim = open(base_file_name + '_randodelim.dat', "w")
     delim = rando_delim()
 
-    # 3. Open a Variable delimiter file
-    #     When writing to this file, randomly choose a delimiter for each line
-
-    # 4. No Delimiter
-    #    When writingto this file, concat all without spaces
-    #    Note this is not fixed width
+    # 3. Open a file for randomized fields
+    test_file_rando_fields = open(base_file_name + '_randofields.dat', 'w')
 
     # Add a header record, assign the keys to the values
     column_names = record.keys()
@@ -169,13 +186,13 @@ for i in range(num_file_sets):
         record['vendor_contact_phone'] = contact_block.contact_phone
         record['vendor_contact_email'] = contact_block.email
 
-        #record_list = list(functools.reduce(lambda x, y: x + y, record.items()))
-        #random.shuffle(record_list)
-        #print(record_list)
+
         # Append record to each open file
         write_training(record)
-        write_test(record,delim)
 
+        write_test(record,delim)
+        # Random fields are currently hard coded to ',' delim
+        write_rando_fields(record)
         # End of Record loop
 
 
@@ -184,8 +201,8 @@ for i in range(num_file_sets):
 
     # Close all open files
     test_file_onedelim.close()
-
+    test_file_rando_fields.close()
     # Trailer for the xml training file
-    training_file.write('<Collection>' + '\n')
+    training_file.write('</Collection>' + '\n')
     training_file.close()
 print('Complete')
