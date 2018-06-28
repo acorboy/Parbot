@@ -163,10 +163,36 @@ def casing(token) :
     if token.isupper() :
         return 'upper'
     elif token.islower() :
-        return 'lower'
+        return 'lower' 
     elif token.istitle() :
         return 'title'
     elif token.isalpha() :
         return 'mixed'
     else :
         return False
+
+def feature_count(token):
+    #Returns the count as [number of spaces, num of '-', num of '@', num of '.', num of numbers ]
+    countmap = {
+        ' ': 0,
+        '-': 1,
+        '@': 2,
+        '.': 3 
+    }
+
+    count = [0,0,0,0,0]
+
+    for char in token:
+        if char in countmap:
+            count[countmap[char]] += 1
+        elif char.isdigit():
+            count[4] += 1
+
+    return count
+
+def pres_keywords(token):
+
+    keywords_comp = ['corp', 'inc', 'llc', 'ltd']
+    keywords_street = ['street','ave','avenue','walk','lane']
+    return [any([token.lower().find(k) != -1 for k in keywords_comp]), 
+            any([token.lower().find(k) != -1 for k in keywords_street]) ]
