@@ -2,6 +2,31 @@ from faker import Faker
 import random
 
 
+def generate_client(country=0):
+    if country == 1:
+        address_country = "en_US"
+    elif country == 2:
+        address_country = "en_CA"
+    else:
+        if bool(random.getrandbits(1)):
+            address_country = "en_US"
+        else:
+            address_country = "en_CA"
+
+    this_client = Faker(address_country)
+
+    class Client:
+        def __init__(self):
+            self.client_name = this_client.company()
+            if address_country == "en_CA":
+                self.client_country = this_client.random_element(elements=("CAN", "Canada", "CA", "Can"))
+            else:
+                self.client_country = this_client.random_element(elements=("USA", "US", "U.S.A", "U.S.",
+                                                                     "United States of America"))
+
+    return Client()
+
+
 def generate_supplier():
     this_supplier = Faker()
 
@@ -12,9 +37,10 @@ def generate_supplier():
                 self.supplier_legal_name = self.supplier_name
             else:
                 self.supplier_legal_name = this_supplier.company()
-            self.tax_id = str(random.randrange(10, 99)) + "-" + str(random.randrange(1111111, 9999999))
             self.supplier_id = this_supplier.md5(raw_output=False)
+            self.tax_id = str(random.randrange(10, 99)) + "-" + str(random.randrange(1111111, 9999999))
             self.supplier_site_id = str(this_supplier.latitude()) + ":" + str(this_supplier.longitude())
+            self.NPI = random.randrange(1111111111, 9999999999)
     return Supplier()
 
 
