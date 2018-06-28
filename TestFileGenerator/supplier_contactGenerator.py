@@ -15,6 +15,7 @@ def generate_supplier():
             self.tax_id = str(random.randrange(10, 99)) + "-" + str(random.randrange(1111111, 9999999))
             self.supplier_id = this_supplier.md5(raw_output=False)
             self.supplier_site_id = str(this_supplier.latitude()) + ":" + str(this_supplier.longitude())
+            self.NPI = random.randrange(1111111111, 9999999999)
     return Supplier()
 
 

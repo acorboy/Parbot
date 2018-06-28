@@ -12,9 +12,10 @@ for _ in range(10):
 
     print("supplier name>>       ", t.supplier_name)
     print("supplier legal name>> ", t.supplier_legal_name)
-    print("tax ID>>              ", t.tax_id)
     print("supplier ID>>         ", t.supplier_id)
+    print("tax ID>>              ", t.tax_id)
     print("supplier site ID>>    ", t.supplier_site_id)
+    print("NPI>>                 ", t.NPI)
     print("-------------")
 
 
