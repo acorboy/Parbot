@@ -4,8 +4,8 @@
 import sys
 import random
 from datetime import date
-from addressGenerator import generate_address
-from supplier_contactGenerator import generate_supplier, generate_company, generate_contact
+from TestFileGenerator.addressGenerator import generate_address
+from TestFileGenerator.supplier_contactGenerator import generate_supplier, generate_company, generate_contact
 
 # Parameters: # of files, average record count
 num_file_sets = sys.argv[1]

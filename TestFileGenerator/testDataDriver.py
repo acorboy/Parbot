@@ -1,4 +1,4 @@
-from supplier_contactGenerator import generate_supplier, generate_company, generate_contact
+from TestFileGenerator.supplier_contactGenerator import generate_supplier, generate_company, generate_contact
 
 import random
 
