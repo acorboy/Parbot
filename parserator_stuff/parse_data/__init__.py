@@ -93,11 +93,11 @@ def tokenize(raw_string):
         if i in delimiters.keys():
             delimiters[i] += 1
     number_of_labels = len(LABELS)
-    for key, val in delimiters.iter():
-        delimiters[key] = abs(val - number_of_labels)
+    for key in delimiters:
+        delimiters[key] = abs(delimiters[key] - number_of_labels)
 
 
-    delimiter = min(delimiters, key=delimiters)
+    delimiter = min(delimiters, key=delimiters.get)
 
     re_tokens = re.compile("(.+?)(?:{}|$)".format(delimiter), re.VERBOSE | re.UNICODE)
     tokens = re_tokens.findall(raw_string)

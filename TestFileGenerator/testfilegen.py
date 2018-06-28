@@ -109,8 +109,7 @@ def write_rando_fields(record):
         else:
             rando_record += '"' + str(record_list[a]) + '"' + ','
 
-    rando_record.rstrip(',')
-    test_file_rando_fields.write(rando_record)
+    test_file_rando_fields.write(rando_record.rstrip(',') + '\n')
 
 # Random delimiter
 def rando_delim():
