@@ -169,6 +169,9 @@ for i in range(num_file_sets):
         record['vendor_contact_phone'] = contact_block.contact_phone
         record['vendor_contact_email'] = contact_block.email
 
+        #record_list = list(functools.reduce(lambda x, y: x + y, record.items()))
+        #random.shuffle(record_list)
+        #print(record_list)
         # Append record to each open file
         write_training(record)
         write_test(record,delim)
