@@ -99,7 +99,6 @@ def tokenize(raw_string):
 
     delimiter = min(delimiters, key=delimiters.get)
 
-
     re_tokens = re.compile("(.+?)(?:{}|$)".format(delimiter), re.VERBOSE | re.UNICODE)
     tokens = re_tokens.findall(raw_string)
 
