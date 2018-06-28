@@ -4,8 +4,10 @@
 import sys
 import random
 from datetime import date
-from TestFileGenerator.addressGenerator import generate_address
-from TestFileGenerator.supplier_contactGenerator import generate_supplier, generate_company, generate_contact
+from addressGenerator import generate_address
+from supplier_contactGenerator import generate_supplier, generate_company, generate_contact
+
+
 
 # Parameters: # of files, average record count
 num_file_sets = sys.argv[1]
@@ -91,7 +93,7 @@ for i in range(num_file_sets):
     print('file:', i+1)
 
     # Open a file each iteration of the file loop for each requirement
-    base_file_name = 'data\parbot_' + todays_date + '_file'+ str(i)
+    base_file_name = '..\data\parbot_' + todays_date + '_file'+ str(i)
 
     # 1. Open a training file - CSV to start, update to the XML preferred for parserator
     training_file = open(base_file_name+'_training.xml', "w")
