@@ -1,8 +1,19 @@
-from TestFileGenerator.supplier_contactGenerator import generate_supplier, generate_company, generate_contact
+from TestFileGenerator.supplier_contactGenerator import generate_client, generate_supplier, generate_company, generate_contact
 
 import random
 
 countryindex = random.randint(0, 2)
+
+print("Buyer")
+print("*******")
+
+for _ in range(10):
+    t = generate_client()
+
+    print("client name>>     ", t.client_name)
+    print("client country>>  ", t.client_country)
+
+    print("-------------")
 
 print("Supplier")
 print("*******")
