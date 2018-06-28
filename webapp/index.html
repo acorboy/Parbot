@@ -1,22 +1,29 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Flask Multiple Upload</title>
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Flask Multiple Upload</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+
+
 <body>
 
-<h1>Flask Multiple Upload</h1>
+<div class="main-head"> <div style="position: relative; top:35%;"> Flask Multiple Upload </div> </div>
 
-<hr><p>
 
+<br><br><br>
+<div class = "box">
 <form id="upload-form" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
 
-    <strong>Files:</strong><br>
-    Select files OR drag them into the box below.
-    <input id="file-picker" type="file" name="file" accept="image/*" multiple><p>
 
-    <div id="dropbox">
+    <strong>Files:</strong><br>
+    <br><br>
+    <input class="custom-file-input" id="file-picker" type="file" name="file" accept="image/*" multiple><p>
+
+    OR
+    <br>
+    <div id="dropbox" class="dropbox">
         Drag and Drop Files Here
     </div><p>
 
@@ -29,8 +36,79 @@
 
     <input type="submit" value="Upload!" id="upload-button">
 </form>
+</div>
 
 <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-2.1.1.min.js') }}"></script>
 
 </body>
 </html>
+
+<style>
+
+
+html, body { height: 100%; 
+    width: 100%; 
+    margin: 0; 
+    font-style: Arial;
+    font-size: 22px;
+background: rgb(255,255,255);
+background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(222,222,222,1) 100%);
+    }
+
+.main-head {
+    text-align: center;
+    font-style: Arial;
+    font-size: 26px;
+    background: #1a1a1a;  
+    color: white;
+    height: 10%;
+    width: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.box {
+    width: 50%;
+    margin: 0 auto;
+    height: 50%;
+    text-align: center;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        
+}
+
+.dropbox {
+    background-color: #fafafa;
+    width: 30%;
+    height: 30%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin: 0 auto;
+
+}
+.custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
+  height: 40px;
+}
+.custom-file-input::before {
+  content: 'Select some files';
+  display: inline-block;
+background: rgb(23,23,23);
+background: linear-gradient(to bottom, rgba(23,23,23,1) 0%, rgba(37,37,37,1) 100%); 
+  border: 1px solid #999;
+  border-radius: 3px;
+  outline: none;
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 14pt;
+  color: white;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+
+}
+.custom-file-input:hover::before {
+  border-color: black;
+}
+.custom-file-input:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+}
+</style>
