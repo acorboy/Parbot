@@ -3,9 +3,9 @@
 #Parbot Test File Generator
 import sys
 import random
-from datetime import date
+from datetime import date, time
 from addressGenerator import generate_address
-from supplier_contactGenerator import generate_supplier, generate_company, generate_contact
+from supplier_contactGenerator import generate_supplier, generate_company, generate_contact, generate_client
 
 
 
@@ -73,10 +73,11 @@ record = {
 # Today's date in YYYY-MM-DD format
 todays_date = str(date.today())
 
+
 def write_training(record):
     training_record = '<TokenSequence>'
     for key in record:
-        training_record += '<' + key + '>' + record[key] + '</' + key + '>'
+        training_record += '<' + key + '>' + str(record[key]) + '</' + key + '>'
     training_record += '<TokenSequence>'
     training_file.write(training_record + '\n')
 
@@ -84,7 +85,10 @@ def write_training(record):
 def write_test(record, delim):
     test_record = ''
     for key in record:
-        test_record += record[key] + delim
+        if not str(record[key]).isnumeric():
+            field = '"' + str(record[key]) +'"'
+        else:  field = str(record[key])
+        test_record += field + delim
 
     test_file_onedelim.write(test_record + '\n')
 
@@ -127,24 +131,23 @@ for i in range(num_file_sets):
         countryindex = random.randint(0, 2)
 
         # Buyer info. This is separate from the Supplier
-        record['buyer_name'] = generate_supplier().supplier_name
+        record['buyer_name'] = generate_client(countryindex).client_name
 
         # Supplier Block
         supplier_block = generate_supplier()
         record['vendor_name'] = supplier_block.supplier_name
         record['vendor_legal_name'] = supplier_block.supplier_legal_name
-
-        record['vendor_id'] = 'A21316513'
-        record['tax_id'] = '123-45-6789'
-        record['vendor_site_id'] = 'Area 51'
-        record['npi'] = ''
+        record['vendor_id'] = supplier_block.supplier_id
+        record['tax_id'] = supplier_block.tax_id
+        record['vendor_site_id'] = supplier_block.supplier_site_id
+        record['npi'] = supplier_block.NPI
 
         # This block sourced from addressGenerator.py generate_address
 
         address_block = generate_address(countryindex)
 
         record['address'] = address_block.address_line1
-        record['address2'] = address_block.address_line1
+        record['address2'] = address_block.address_line2
         record['city'] = address_block.city
         record['state'] = address_block.state
         record['zip'] = address_block.postalCode
