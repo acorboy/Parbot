@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 
 #Parbot Test File Generator
-
 import sys
 import random
 from datetime import date
-from gen_contact_name import gen_contact_name
+from addressGenerator import generate_address
+import nameGenerator
 
 # Parameters: # of files, average record count
 num_file_sets = sys.argv[1]
@@ -72,9 +72,11 @@ record = {
 todays_date = str(date.today())
 
 def write_training(record):
-    training_record = ''
+    training_record = '<TokenSequence>'
     for key in record:
-        training_record += record[key] + ','
+        training_record += '<' + key + '>' record[key] + '</' + key + '>'
+
+    training_record += '<TokenSequence>'
     training_file.write(training_record + '\n')
 
 # Stub - Function for writing to test file
@@ -121,14 +123,20 @@ for i in range(num_file_sets):
         record['tax_id'] = 'default'
         record['vendor_site_id'] = 'default'
         record['npi'] = 'default'
+
+        # This block sourced from addressGenerator.py generate_address
         record['address'] = 'default'
         record['address2'] = 'default'
         record['city'] = 'default'
         record['state'] = 'default'
         record['zip'] = 'default'
         record['country'] = 'default'
+        # End addressGenerator.py
+
         record['phone_number'] = 'default'
-        record['vendor_contact_name'] = gen_contact_name()
+
+        # This block sourcedfrom nameGenerator.py generate_person
+        record['vendor_contact_name'] = 'default'
         record['vendor_contact_title'] = 'default'
         record['vendor_contact_phone'] = 'default'
         record['vendor_contact_email'] = 'default'
