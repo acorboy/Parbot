@@ -13,6 +13,8 @@ for _ in range(10):
     print("supplier name>>       ", t.supplier_name)
     print("supplier legal name>> ", t.supplier_legal_name)
     print("tax ID>>              ", t.tax_id)
+    print("supplier ID>>         ", t.supplier_id)
+    print("supplier site ID>>    ", t.supplier_site_id)
     print("-------------")
 
 
@@ -20,7 +22,7 @@ print("Address")
 print("*******")
 
 for _ in range(10):
-    t = generate_address(countryindex)
+    t = generate_company(countryindex)
 
     print("address line 1>> ", t.address_line1)
     print("address line 2>> ", t.address_line2)
