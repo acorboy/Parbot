@@ -5,7 +5,7 @@ import sys
 import random
 from datetime import date
 from addressGenerator import generate_address
-import nameGenerator
+from supplier_contactGenerator import generate_supplier, generate_company, generate_contact
 
 # Parameters: # of files, average record count
 num_file_sets = sys.argv[1]
@@ -74,27 +74,34 @@ todays_date = str(date.today())
 def write_training(record):
     training_record = '<TokenSequence>'
     for key in record:
-        training_record += '<' + key + '>' record[key] + '</' + key + '>'
-
+        training_record += '<' + key + '>' + record[key] + '</' + key + '>'
     training_record += '<TokenSequence>'
     training_file.write(training_record + '\n')
 
 # Stub - Function for writing to test file
-def write_test(record):
+def write_test(record, delim):
     test_record = ''
+    for key in record:
+        test_record += record[key] + delim
+
+    test_file_onedelim.write(test_record + '\n')
 
 # For each file set requested, loop through opening new files, creating records, then closing the files
 for i in range(num_file_sets):
     print('file:', i+1)
 
     # Open a file each iteration of the file loop for each requirement
-    base_file_name = 'parbot_' + todays_date + '_file'+ str(i)
+    base_file_name = 'data\parbot_' + todays_date + '_file'+ str(i)
 
     # 1. Open a training file - CSV to start, update to the XML preferred for parserator
-    training_file = open(base_file_name+'training.csv', "w")
+    training_file = open(base_file_name+'_training.xml', "w")
+    # Header for the xml training file
+    training_file.write('<Collection>' + '\n')
 
     # 2. Open a different delimiter file
     #     Choose 1 delimiter randomly from a list of them
+    test_file_onedelim = open(base_file_name + '_onedelim.dat', "w")
+    delim = ","
 
     # 3. Open a Variable delimiter file
     #     When writing to this file, randomly choose a delimiter for each line
@@ -107,8 +114,6 @@ for i in range(num_file_sets):
     column_names = record.keys()
     for i in column_names:
         record[i] = i
-    # Always add header to the training file
-    write_training(record)
 
     # Random chance we'll write header to the test file
     #header_chance = random.random()
@@ -116,34 +121,46 @@ for i in range(num_file_sets):
 
     # Create a new record to be appended to the files.  It will be cleared after its appended.
     for q in range(num_records):
-        record['buyer_name'] = 'default'
-        record['vendor_name'] = 'default'
-        record['vendor_legal_name'] = 'default'
-        record['vendor_id'] = 'default'
-        record['tax_id'] = 'default'
-        record['vendor_site_id'] = 'default'
-        record['npi'] = 'default'
+        # Random country index for Faker data
+        countryindex = random.randint(0, 2)
+
+        # Buyer info. This is separate from the Supplier
+        record['buyer_name'] = generate_supplier().supplier_name
+
+        # Supplier Block
+        supplier_block = generate_supplier()
+        record['vendor_name'] = supplier_block.supplier_name
+        record['vendor_legal_name'] = supplier_block.supplier_legal_name
+
+        record['vendor_id'] = 'A21316513'
+        record['tax_id'] = '123-45-6789'
+        record['vendor_site_id'] = 'Area 51'
+        record['npi'] = ''
 
         # This block sourced from addressGenerator.py generate_address
-        record['address'] = 'default'
-        record['address2'] = 'default'
-        record['city'] = 'default'
-        record['state'] = 'default'
-        record['zip'] = 'default'
-        record['country'] = 'default'
+
+        address_block = generate_address(countryindex)
+
+        record['address'] = address_block.address_line1
+        record['address2'] = address_block.address_line1
+        record['city'] = address_block.city
+        record['state'] = address_block.state
+        record['zip'] = address_block.postalCode
+        record['country'] = address_block.country
         # End addressGenerator.py
 
-        record['phone_number'] = 'default'
+        record['phone_number'] = generate_company(countryindex).telephone
 
         # This block sourcedfrom nameGenerator.py generate_person
-        record['vendor_contact_name'] = 'default'
-        record['vendor_contact_title'] = 'default'
-        record['vendor_contact_phone'] = 'default'
-        record['vendor_contact_email'] = 'default'
+        contact_block = generate_contact(countryindex)
+        record['vendor_contact_name'] = contact_block.fullname
+        record['vendor_contact_title'] = contact_block.job_title
+        record['vendor_contact_phone'] = contact_block.contact_phone
+        record['vendor_contact_email'] = contact_block.email
 
-        print(q)
         # Append record to each open file
         write_training(record)
+        write_test(record,delim)
 
         # End of Record loop
 
@@ -152,5 +169,9 @@ for i in range(num_file_sets):
     # Log file names
 
     # Close all open files
+    test_file_onedelim.close()
+
+    # Trailer for the xml training file
+    training_file.write('<Collection>' + '\n')
     training_file.close()
-print('Outside of Loop')
+print('Complete')
