@@ -1,15 +1,28 @@
 from addressGenerator import generate_address
-from nameGenerator import generate_company, generate_person
+from nameGenerator import generate_supplier, generate_company, generate_contact
 
 import random
+
+countryindex = random.randint(0, 2)
+
+print("Supplier")
+print("*******")
+
+for _ in range(10):
+    t = generate_supplier()
+
+    print("supplier name>>       ", t.supplier_name)
+    print("supplier legal name>> ", t.supplier_legal_name)
+    print("tax ID>>              ", t.tax_id)
+    print("-------------")
+
 
 print("Address")
 print("*******")
 
-countryindex = random.randint(0, 2)
-
 for _ in range(10):
     t = generate_address(countryindex)
+
     print("address line 1>> ", t.address_line1)
     print("address line 2>> ", t.address_line2)
     print("city>>           ", t.city)
@@ -18,25 +31,28 @@ for _ in range(10):
     print("country>>        ", t.country)
     print("-------------")
 
+
 print("Company")
 print("*******")
 
 for _ in range(10):
     t = generate_company()
-    print("vendor name>> ", t.vendor_name)
+
+    print("company phone #>>     ", t.telephone)
+    print("company fax phone #>> ", t.fax_number)
     print("-------------")
 
-print("Person")
+print("Contact")
 print("*******")
 
 for _ in range(10):
-    t = generate_person(countryindex)
-    print("fullname>>       ", t.fullname)
+    t = generate_contact(countryindex)
+
     print("first name>>     ", t.first_name)
     print("last name>>      ", t.last_name)
     print("suffix>>         ", t.suffix)
+    print("fullname>>       ", t.fullname)
     print("job title>>      ", t.job_title)
-    print("telephone>>      ", t.telephone)
-    print("fax number>>     ", t.fax_number)
     print("contact number>> ", t.contact_phone)
+    print("contact email>>  ", t.email)
     print("-------------")
