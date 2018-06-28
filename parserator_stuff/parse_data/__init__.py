@@ -14,7 +14,23 @@ from collections import OrderedDict
 #     (\__/) || 
 #     (•ㅅ•) || 
 #     / 　 づ
-LABELS = [] # The labels should be a list of strings
+LABELS = ["buyer_name",
+          "vendor_name",
+          "vendor_legal_name",
+          "vendor_id", "tax_id",
+          "vendor_site_id",
+          "npi",
+          "address",
+          "address2",
+          "city",
+          "state",
+          "zip",
+          "country",
+          "phone_number",
+          "vendor_contact_name",
+          "vendor_contact_title",
+          "vendor_contact_phone",
+          "vendor_contact_email"] # The labels should be a list of strings
 
 #***************** OPTIONAL CONFIG ***************************************************
 PARENT_LABEL  = 'TokenSequence'               # the XML tag for each labeled string
@@ -66,14 +82,20 @@ def tag(raw_string) :
 def tokenize(raw_string):
     # this determines how any given string is split into its tokens
     # handle any punctuation you want to split on, as well as any punctuation to capture
-
     if isinstance(raw_string, bytes):
         try:
             raw_string = str(raw_string, encoding='utf-8')
         except:
             raw_string = str(raw_string)
+
+    delimiters = {",": 0, ";": 0, ":": 0, ".": 0, "|": 0, "^": 0, "\t": 0}
+    for i in raw_string:
+        if i in delimiters.keys():
+            delimiters[i] += 1
+
+    delimiter = max(delimiters, key=delimiters)
     
-    re_tokens = # re.compile( [REGEX HERE], re.VERBOSE | re.UNICODE)
+    re_tokens = re.compile("(.+?)(?:{}|$)".format(delimiter), re.VERBOSE | re.UNICODE)
     tokens = re_tokens.findall(raw_string)
 
     if not tokens :
