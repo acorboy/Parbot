@@ -1,5 +1,4 @@
-from addressGenerator import generate_address
-from nameGenerator import generate_supplier, generate_company, generate_contact
+from supplier_contactGenerator import generate_supplier, generate_company, generate_contact
 
 import random
 

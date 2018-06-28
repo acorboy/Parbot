@@ -32,6 +32,32 @@ def generate_company(country=0):
 
     class Company:
         def __init__(self):
+            if bool(random.getrandbits(1)):
+                self.address_line1 = str(this_company.random_int()) + " " + this_company.street_name()
+                if bool(random.getrandbits(1)):
+                    self.address_line2 = this_company.secondary_address()
+                else:
+                    self.address_line2 = " "
+            else:
+                self.address_line1 = this_company.street_address()
+                self.address_line2 = " "
+            self.city = this_company.city()
+            if address_country == "en_CA":
+                if bool(random.getrandbits(1)):
+                    self.state = this_company.province()
+                else:
+                    self.state = this_company.province_abbr()
+            else:
+                if bool(random.getrandbits(1)):
+                    self.state = this_company.state()
+                else:
+                    self.state = this_company.state_abbr()
+            self.postalCode = this_company.postalcode()
+            if address_country == "en_CA":
+                self.country = this_company.random_element(elements=("CAN", "Canada", "CA", "Can"))
+            else:
+                self.country = this_company.random_element(elements=("USA", "US", "U.S.A", "U.S.",
+                                                                     "United States of America"))
             # can return number with extension - do we need a different solution?
             self.telephone = this_company.phone_number()
             self.fax_number = this_company.phone_number()
