@@ -89,8 +89,13 @@ def write_test(record, delim):
             field = '"' + str(record[key]) +'"'
         else:  field = str(record[key])
         test_record += field + delim
-
     test_file_onedelim.write(test_record + '\n')
+
+# Random delimiter
+def rando_delim():
+    delim_list = (',', ';', '|', ':', '^','\\x01')
+    pick_delim = random.randint(0, len(delim_list) - 1)
+    return delim_list[pick_delim]
 
 # For each file set requested, loop through opening new files, creating records, then closing the files
 for i in range(num_file_sets):
@@ -106,8 +111,8 @@ for i in range(num_file_sets):
 
     # 2. Open a different delimiter file
     #     Choose 1 delimiter randomly from a list of them
-    test_file_onedelim = open(base_file_name + '_onedelim.dat', "w")
-    delim = ","
+    test_file_onedelim = open(base_file_name + '_randodelim.dat', "w")
+    delim = rando_delim()
 
     # 3. Open a Variable delimiter file
     #     When writing to this file, randomly choose a delimiter for each line
@@ -122,8 +127,9 @@ for i in range(num_file_sets):
         record[i] = i
 
     # Random chance we'll write header to the test file
-    #header_chance = random.random()
-    #if header_chance > 0.8:
+    header_chance = random.random()
+    if header_chance > 0.8:
+        write_test(record,delim)
 
     # Create a new record to be appended to the files.  It will be cleared after its appended.
     for q in range(num_records):
